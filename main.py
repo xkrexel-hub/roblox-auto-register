@@ -142,7 +142,7 @@ async def daftar_roblox(username, password, output_file, retry_count=0):
     max_retries = len(RATE_LIMIT_WAIT_TIMES)
     
     async with async_playwright() as p:
-        browser = await p.chromium.launch(
+        browser = await p.firefox.launch(
             headless=False,
             args=[
                 "--disable-blink-features=AutomationControlled",
