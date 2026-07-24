@@ -1,1 +1,53 @@
 
+# Hasil output (jangan sampai ke-upload!)
+*.txt
+!requirements.txt
+
+# Folder cookies
+cookies/
+
+# Environment & Config
+.env
+config.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+*.manifest
+*.spec
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Playwright
+playwright-report/
+test-results/
+
+# Session & Cache
+*.session
+.browser_data/
