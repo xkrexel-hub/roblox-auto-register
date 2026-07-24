@@ -255,18 +255,46 @@ async def daftar_roblox(username, password, output_file, retry_count=0):
                     raw_cookie_value = cookie.get("value")
                     break
 
+            # ============================================
+            # 🔥 SIMPAN COOKIES (DEFAULT + STORAGE/KREXEL)
+            # ============================================
+            
+            # Simpan di folder cookies utama (Termux/PC)
             os.makedirs("cookies", exist_ok=True)
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            with open(f"cookies/{username}_{timestamp}.json", "w", encoding="utf-8") as f:
+            cookies_file = f"cookies/{username}_{timestamp}.json"
+            with open(cookies_file, "w", encoding="utf-8") as f:
                 json.dump(cookies, f, indent=4)
+            print(f"[📁] Cookie disimpan: {cookies_file}")
+            
+            # 🔥 AUTO COPY KE STORAGE/KREXEL/COOKIES (BUAT TERMUX)
+            try:
+                storage_cookies = os.path.expanduser("~/storage/shared/krexel/cookies")
+                os.makedirs(storage_cookies, exist_ok=True)
+                with open(f"{storage_cookies}/{username}_{timestamp}.json", "w", encoding="utf-8") as f:
+                    json.dump(cookies, f, indent=4)
+                print(f"[📁] Cookie juga disimpan ke: storage/krexel/cookies/")
+            except Exception as e:
+                pass  # Gagal copy? Gapapa, udah ada di folder cookies/
 
             if raw_cookie_value:
                 full_cookie_string = f".ROBLOSECURITY={raw_cookie_value}"
                 
                 print(f"[+] .ROBLOSECURITY Berhasil Didapatkan!")
                 
+                # Simpan ke file utama
                 with open(output_file, "a", encoding="utf-8") as f:
                     f.write(f"{username}:{password}:{full_cookie_string}\n")
+                
+                # 🔥 AUTO COPY HASIL KE STORAGE/KREXEL/ (BUAT TERMUX)
+                try:
+                    storage_path = os.path.expanduser("~/storage/shared/krexel")
+                    os.makedirs(storage_path, exist_ok=True)
+                    with open(f"{storage_path}/{output_file}", "a", encoding="utf-8") as f:
+                        f.write(f"{username}:{password}:{full_cookie_string}\n")
+                    print(f"[📁] Hasil juga disimpan ke: storage/krexel/{output_file}")
+                except Exception as e:
+                    pass  # Gagal copy? Gapapa, udah ada di folder utama
                 
                 cookie_msg = f"```\n{full_cookie_string}\n```"
             else:
@@ -366,6 +394,7 @@ async def main():
     print(f"[🛡️] Anti-detection: Random delays + Natural behavior enabled")
     print(f"[⏰] Timeout Captcha: 5 menit per akun")
     print(f"[💾] Hasil akan disimpan ke: {nama_file}")
+    print(f"[📱] Storage backup: storage/krexel/ (Termux)")
     if DISCORD_WEBHOOK_URL:
         print(f"[📨] Notifikasi Discord: AKTIF")
     else:
@@ -435,6 +464,7 @@ async def main():
         print(f"[🔄] Username diganti: {retry_username}x")
     print(f"[💾] Hasil disimpan di: {nama_file}")
     print(f"[📁] Cookies detail di folder: cookies/")
+    print(f"[📱] Backup di: storage/krexel/")
     print(f"{'='*50}")
     
     # Tampilkan isi file hasil
